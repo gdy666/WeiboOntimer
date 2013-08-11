@@ -16,6 +16,7 @@
 #include <stdlib.h>
 
 
+
 #define WEIBO_POST_URL 			"https://api.weibo.com/2/statuses/update.json"
 #define WEIBO_UPLOAD_URL 		"https://upload.api.weibo.com/2/statuses/upload.json"
 #define WEIBO_GET_NEWEST_URL 	"https://api.weibo.com/2/statuses/mentions.json"
@@ -29,25 +30,25 @@ typedef long long int64;
 #define SUCCESS 0
 #define FAULT 1
 
-int new_weibo_post(const char* content);	//发送一条新微博
-int new_weibo_post_upload(const char* content,const char* picture_file_name);	//发送一条微博+图片
+int new_weibo_post(const char* access_token,const char* content);	//发送一条新微博
+int new_weibo_post_upload(const char* access_token,const char* content,const char* picture_file_name);	//发送一条微博+图片
 
 /*
  * 获取最新的@用户的自己所关注的人的微博(原创)
  */
-int get_newest_at_user(char* result,int count);
+int get_newest_at_user(const char* access_token,int count,char* result);
 
 
 /*
  * 评论一条微博
  */
-int new_comments_post(const char* comments,int64 id);
+int new_comments_post(const char* access_token,const char* comments,int64 id);
 
 
 /*
  * 转发微博/转发微博同时评论
  */
-int repost_weibo(const char* comments,int64 id,int iscomment);
+int repost_weibo(const char* access_token,const char* comments,int64 id,int iscomment);
 
 
 /*
@@ -66,7 +67,7 @@ int repost_weibo(const char* comments,int64 id,int iscomment);
 	badge			int		新勋章数
 	photo			int		相册消息未读数
  */
-int get_unread_count(char* result);
+int get_unread_count(const char* access_token,char* result);
 
 /*
  * 对当前登录用户某一种消息未读数进行清零
@@ -74,15 +75,13 @@ int get_unread_count(char* result);
  * mention_status：新提及我的微博数、mention_cmt：新提及我的评论数
  * cmt：新评论数
  */
-int remind_reset(const char* type);
+int remind_reset(const char* access_token,const char* type);
 
 //通过用户名和密码获取到Token，只适用用拥有高权限的APPID
 /*例如
  *Weico Android:	appid:211160679 	appsecret:63b64d531b98c2dbff2443816f274dd3
  */
 int get_token(const char* appid,const char* appsecret,const char* username,const char* password);
-
-void debug(const char *fmt, ...);
 
 #endif /* WEIBO_H_ */
 

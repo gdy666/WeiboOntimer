@@ -8,6 +8,7 @@
  */
 #include "sensor.h"
 #define DHT11_ORDER "DHT11"
+//#include "includes.h"
 
 extern char serial_port[];
 int DHT11_readData(struct DHT11* data)
@@ -32,8 +33,6 @@ int DHT11_readData(struct DHT11* data)
 
 	//判定接收到的字符串长度，小于50失败
 	if(strlen(buffer)>50){
-		char temp[8];
-		char rehum[8];
 		sscanf(buffer,"%*s%*s%*s%*s%d%*s%d",&data->temp,&data->rehum);
 		debug("temp:%d rehum:%d\n",data->temp,data->rehum);
 	}else{

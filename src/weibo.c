@@ -2,33 +2,17 @@
  * weibo.c
  *
  *  Created on: 2013年8月6日
- *      Author: yeso
- *  		QQ:	272288813
- *		e-mail: cheng@yeso.me
+ *  	  From: https://github.com/maxshine/weicoPI
  */
 
 #include "weibo.h"
 #include "curlutil.h"
 
-#ifdef DEBUG
-	#include <stdarg.h>
-	void debug(const char *fmt, ...)
-	 {
-			 va_list ap;
-			 va_start(ap, fmt);
-			 vprintf(fmt, ap);
-			 va_end(ap);
-	 }
- #else
-	void debug(const char *fmt, ...)
-	 {
-	 }
-#endif
+#include "includes.h"
 
 #define WEIBO_POST_BUFFER_LENGTH 280
 #define MAXBUFFER 40960
 #define ARGVBUFFER 256
-extern char access_token[];
 
 long long since_id=0;	//
 
@@ -40,7 +24,7 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
 }
 
 
-int new_weibo_post(const char* content)
+int new_weibo_post(const char* access_token,const char* content)
 {
 	int ret;
 	int state = SUCCESS;	//标记是否发微博成功
@@ -49,6 +33,7 @@ int new_weibo_post(const char* content)
 
 	sprintf(argv, "access_token=%s&visible=0&status=%s", access_token, content);
 	ret = post_with_argv(WEIBO_POST_URL, argv, result);
+
 	debug("ret:%d \n result:\n%s\n",ret,result);
 	if(NULL==strstr(result,"created_at")){	//微博发表不成功
 		state=FAULT;
@@ -59,7 +44,7 @@ int new_weibo_post(const char* content)
 	return state;
 }
 
-int new_weibo_post_upload(const char* content,const char* picture_file_name)
+int new_weibo_post_upload(const char* access_token,const char* content,const char* picture_file_name)
 {
 	CURL *curl = NULL;
 	CURLcode ret;
@@ -94,7 +79,7 @@ int new_weibo_post_upload(const char* content,const char* picture_file_name)
 	return state;
 }
 
-int get_newest_at_user(char* result,int count)
+int get_newest_at_user(const char* access_token,int count,char* result)
 {
 	int ret;
 	char* argv =(char*) calloc(128,sizeof(char));
@@ -111,7 +96,7 @@ int get_newest_at_user(char* result,int count)
 	return state;
 }
 
-int get_unread_count(char* result)
+int get_unread_count(const char* access_token,char* result)
 {
 	int ret;
 	char* argv =(char*) calloc(128,sizeof(char));
@@ -127,7 +112,7 @@ int get_unread_count(char* result)
 	return state;
 }
 
-int new_comments_post(const char* comments,int64 id)
+int new_comments_post(const char* access_token,const char* comments,int64 id)
 {
 	int ret;
 	char* argv =(char*) calloc(256,sizeof(char));
@@ -145,7 +130,7 @@ int new_comments_post(const char* comments,int64 id)
 	return state;
 }
 
-int repost_weibo(const char* comments,int64 id,int iscomment)
+int repost_weibo(const char* access_token,const char* comments,int64 id,int iscomment)
 {
 	int ret;
 	char* argv =(char*) calloc(256,sizeof(char));
@@ -163,7 +148,7 @@ int repost_weibo(const char* comments,int64 id,int iscomment)
 	return state;
 }
 
-int remind_reset(const char* type)
+int remind_reset(const char* access_token,const char* type)
 {
 	int ret;
 	char* argv =(char*) calloc(256,sizeof(char));

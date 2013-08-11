@@ -10,6 +10,7 @@
 #ifndef SENSOR_H_
 #include "serialib.h"
 
+
 //DHT11温湿度传感器的数据
 struct DHT11{
 	int temp;	//温度

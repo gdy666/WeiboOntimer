@@ -10,9 +10,20 @@
 #include "yeini.h"
 #include "weibo.h"
 #include "sensor.h"
+#include "includes.h"
 
+void debug(const char *fmt, ...)
+{
+	#ifdef DEBUG
+		 va_list ap;
+		 va_start(ap, fmt);
+		 vprintf(fmt, ap);
+		 va_end(ap);
+	#endif
+}
 
 extern char weibo_content_add[];
+extern char access_token[];
 
 int main()
 {
@@ -25,7 +36,7 @@ int main()
 		struct DHT11 dht11_data;
 
 		while(DHT11_readData(&dht11_data)){
-
+			sleep(2);
 		}
 		char dht11_content[128];
 		//%%25=%,防止post丢失问题
@@ -33,9 +44,12 @@ int main()
 
 		strcat(weibo_content,dht11_content);
 		strcat(weibo_content, weibo_content_add);	//将在配置文件中读取到的内容追加
-		while(new_weibo_post(weibo_content)){ //如果微博发表不成功则睡眠8秒后重发
+		while(new_weibo_post(access_token,weibo_content)){ //如果微博发表不成功则睡眠8秒后重发
 			sleep(8);
 		}
 	}
-
+	curl_global_cleanup();
+	return 0;
 }
+
+
