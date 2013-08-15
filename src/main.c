@@ -12,6 +12,8 @@
 #include "sensor.h"
 #include "includes.h"
 
+#define DEBUG		//
+
 void debug(const char *fmt, ...)
 {
 	#ifdef DEBUG

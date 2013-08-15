@@ -31,7 +31,7 @@ int post_with_argv(const char* URL,const char* argv,char* result)
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, strlen(argv));
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, result);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, get_data);
-//	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 	ret = curl_easy_perform(curl);
 

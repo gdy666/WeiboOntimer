@@ -5,6 +5,7 @@
  *      Author: yeso
  *  		QQ:	272288813
  *		e-mail: cheng@yeso.me
+ *		version:	0.1
  */
 
 #ifndef WEIBO_H_
@@ -82,6 +83,8 @@ int remind_reset(const char* access_token,const char* type);
  *Weico Android:	appid:211160679 	appsecret:63b64d531b98c2dbff2443816f274dd3
  */
 int get_token(const char* appid,const char* appsecret,const char* username,const char* password);
+
+//void debug(const char *fmt, ...);
 
 #endif /* WEIBO_H_ */
 
